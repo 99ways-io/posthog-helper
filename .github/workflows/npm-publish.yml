@@ -42,10 +42,9 @@ jobs:
         body: Changes in this release.
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-- name: Clean up release branch
-  if: github.ref == 'refs/heads/release-branch'
-  run: |
-    git push origin --delete release-branch
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Clean up release branch
+      if: github.ref == 'refs/heads/release-branch'
+      run: |
+        git push origin --delete release-branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
