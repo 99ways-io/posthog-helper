@@ -17,6 +17,22 @@ jobs:
         registry-url: 'https://registry.npmjs.org/'
     - run: npm install
     - run: npm run build
-    - run: npm publish
+    - name: Bump version and generate changelog
+      run: npm run release -- --ci
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Push changes back to GitHub
+      run: |
+        git push --follow-tags
+    - name: Publish to npm
+      run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: Changes in this release.
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

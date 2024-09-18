@@ -19,6 +19,7 @@
   "description": "A lightweight posthog wrapper for managing A/B test variations and feature flags",
   "devDependencies": {
     "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "standard-version": "^9.3.1" 
   }
 }
