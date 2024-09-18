@@ -3,7 +3,8 @@
   "version": "1.0.3",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "release": "standard-version" 
   },
   "keywords": [
     "A/B Testing",
@@ -18,8 +19,8 @@
   "license": "ISC",
   "description": "A lightweight posthog wrapper for managing A/B test variations and feature flags",
   "devDependencies": {
+    "standard-version": "^9.5.0",
     "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4",
-    "standard-version": "^9.3.1" 
+    "webpack-cli": "^5.1.4"
   }
 }
