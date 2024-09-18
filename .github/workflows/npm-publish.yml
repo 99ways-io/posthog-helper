@@ -27,9 +27,10 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Push changes back to GitHub
       run: |
-        git branch --show-current # Show current branch
         git checkout -b release-branch
         git push origin release-branch --follow-tags
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }} 
     - name: Publish to npm
       run: npm publish
       env:
@@ -40,11 +41,5 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
         body: Changes in this release.
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Clean up release branch
-      if: github.ref == 'refs/heads/release-branch'
-      run: |
-        git push origin --delete release-branch
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
