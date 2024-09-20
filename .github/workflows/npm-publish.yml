@@ -2,44 +2,18 @@ name: Publish to npm
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches: main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
-        registry-url: 'https://registry.npmjs.org/'
-    - run: npm install
-    - run: npm run build
-    - name: Configure Git
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-    - name: Bump version and generate changelog
-      run: npm run release -- --ci
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-    - name: Push changes back to GitHub
-      run: |
-        git checkout -b release-branch
-        git push origin release-branch --follow-tags
-      env:
-        GH_PAT: ${{ secrets.GH_PAT }} 
-    - name: Publish to npm
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    - name: Create GitHub Release
-      uses: actions/create-release@v1
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: Changes in this release.
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npm test
+      - uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
